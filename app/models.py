@@ -67,9 +67,9 @@ class User(UserMixin, db.Model):
     # Return union of own posts and followed posts in chronological order
     def followed_posts(self):
         followed = Post.query.join(
-            followers(followers.c.followed_id == Post.user.id)).filter(
+            followers, followers.c.followed_id == Post.user_id).filter(
                 followers.c.follower_id == self.id)
-        own = Post.query.filter_by(Post.user_id == self.id)
+        own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
 
 
