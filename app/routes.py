@@ -85,10 +85,17 @@ def register():
 
 
 # Profile pages
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):     # username comes from <username> in decorator
     form = EmptyForm()
+    post_form = PostForm()
+    if post_form.validate_on_submit():
+        post = Post(body=post_form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('user', username=username))
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(
@@ -98,7 +105,7 @@ def user(username):     # username comes from <username> in decorator
     prev_url = url_for('user', username=username, page=posts.prev_num) \
         if posts.prev_num else None
     return render_template('user.html', user=user, posts=posts.items,
-        form=form, next_url=next_url, prev_url=prev_url)
+        form=form, next_url=next_url, prev_url=prev_url, post_form=post_form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])

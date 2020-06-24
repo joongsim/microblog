@@ -13,9 +13,20 @@
                 <p>Last seen on: {{ user.last_seen }}</p>
                 {% endif %}
                 <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following</p>
-                <!-- Only shows edit profile link if user is viewing own profile -->
+                <!-- Only shows edit profile link/post field if user is viewing own profile -->
                 {% if user == current_user %}
-                <p><a href=" {{ url_for('edit_profile') }}">Edit your profile</p>
+                <p><a href=" {{ url_for('edit_profile') }}">Edit your profile</a></p>
+                <form action="", method='POST'>
+                    {{ post_form.hidden_tag() }}
+                    {{ post_form.post.label }}
+                    <p>
+                        {{ post_form.post(cols=32, rows=4) }}
+                        {% for error in post_form.post.errors %}
+                            <span style="color:red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>{{ post_form.submit() }}</p>
+                </form>
                 {% elif not current_user.is_following(user) %}
                 <p>
                     <form action="{{ url_for('follow', username=user.username) }}" method="POST">
