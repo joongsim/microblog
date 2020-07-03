@@ -5,6 +5,8 @@ from app import app, mail
 
 
 def send_async_email(app, msg):
+    # app_context() gives access to application instance
+    # b/c need to access config
     with app.app_context():
         mail.send(msg)
 
