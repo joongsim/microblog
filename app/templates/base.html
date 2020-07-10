@@ -1,32 +1,73 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
         {% if title %}
         <title>{{ title }} - Microblog</title>
         {% else %}
         <title>Welcome to Microblog!</title>
         {% endif %}
+        
+        {% endblock %}
     </head>
     <body>
-        <div>Microblog: 
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-            <a href="{{ url_for('explore') }}">Explore</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
+        <!-- Your page content -->
+        {% block navbar %}
+        <div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="{{ url_for('index') }}">Microblog</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% if current_user.is_anonymous %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('explore') }}">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            </nav>
         </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+        <br>
+        {% endblock navbar %}      
+        
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        
         {% block content %}{% endblock %}
+        
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+        
     </body>
 </html>
