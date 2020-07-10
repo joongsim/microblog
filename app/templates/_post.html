@@ -1,7 +1,7 @@
 <!-- Post subtemplate -->
-<table>
-    <tr valign='top'>
-        <td><img src='{{ post.author.avatar(36) }}'></td>
+<table class='table table-hover'>
+    <tr>
+        <td width="45px"><img src='{{ post.author.avatar(45) }}'></td>
         <td>
             <a href="{{ url_for('user', username=post.author.username) }}">
                 {{ post.author.username }}</a>
