@@ -6,6 +6,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+        
+
         {% block styles %}
             <!-- Bootstrap CSS -->
             {{ bootstrap.load_css() }}
@@ -67,6 +69,7 @@
         {% block scripts %}
             <!-- Optional JavaScript -->
             {{ bootstrap.load_js() }}
+            {{ moment.include_moment() }}
         {% endblock %}
         
     </body>

@@ -3,9 +3,17 @@
     <tr>
         <td width="45px"><img src='{{ post.author.avatar(45) }}'></td>
         <td>
-            <a href="{{ url_for('user', username=post.author.username) }}">
-                {{ post.author.username }}</a>
-            says: <br>{{ post.timestamp }}<br>{{ post.body }}
+            {% set user_link %}
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    {{ post.author.username }}
+                </a>
+            {% endset %}
+            {{ _('%(username)s', username=user_link) }}
+            <span class="small">
+                [{{ moment(post.timestamp).fromNow() }}]:<br>
+            </span>
+            {{ post.body }}<br>
+            
         </td>
     </tr>
 </table>
