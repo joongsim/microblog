@@ -17,11 +17,11 @@
                 <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following</p>
                 <!-- Only shows edit profile link/post field if user is viewing own profile -->
                 {% if user == current_user %}
-                <p><a href=" {{ url_for('edit_profile') }}">Edit your profile</a></p>
+                <p><a href=" {{ url_for('main.edit_profile') }}">Edit your profile</a></p>
                 {{ render_form(post_form, method='POST')}}
                 {% elif not current_user.is_following(user) %}
                 <p>
-                    <form action="{{ url_for('follow', username=user.username) }}" method="POST">
+                    <form action="{{ url_for('main.follow', username=user.username) }}" method="POST">
                         <!--hidden_tag() to protect against CSRF attacks-->
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='Follow', class_='btn btn-outline-primary') }}
@@ -29,7 +29,7 @@
                 </p>
                 {% else %}
                 <p>
-                    <form action="{{ url_for('unfollow', username=user.username) }}" method="POST">
+                    <form action="{{ url_for('main.unfollow', username=user.username) }}" method="POST">
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='Unfollow', class_='btn btn-outline-primary') }}
                     </form>
