@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='container-fluid'>
+    <h1>{{ _('Search Results') }}</h1>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    <nav aria-label='...'>
+        <ul class='pagination'>
+            <li class="previous {% if not prev_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ prev_url or '#' }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="next {% if not next_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ next_url or '#' }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock content %}

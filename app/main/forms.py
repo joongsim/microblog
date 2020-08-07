@@ -1,3 +1,4 @@
+from flask import request
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as _l
 from wtforms import (BooleanField, PasswordField, StringField, SubmitField,
@@ -77,3 +78,19 @@ class ResetPasswordForm(FlaskForm):
     password2 = _l(PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')]))
     submit = _l(SubmitField('Request Password Reset'))
+
+
+class SearchForm(FlaskForm):
+    q = StringField(_l('Search'), validators=[DataRequired()])
+    
+    def __init__(self, *args, **kwargs):
+        # Flask writes form values for POST requests to request.form
+        # and GET requests to request.arg
+        # Tells Python where to look to get form submissions
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.args
+        # CSRF protection needs to be off for search results to be clickable
+        # Tells Flask-WTF to bypass csrf protection for this form
+        if 'csrf_enabled' not in kwargs:
+            kwargs['csrf_enabled'] = False
+        super(SearchForm, self).__init__(*args, **kwargs)
